@@ -6,3 +6,17 @@ FlowRouter.route('/', {
     this.render('index');
   }
 });
+
+FlowRouter.route('/chats', {
+  name: 'chats',
+  action() {
+    this.render('chats');
+  }
+});
+
+FlowRouter.route('/chat/:_id', {
+  name: 'chat',
+  action() {
+    this.render('chat');
+  }
+});
