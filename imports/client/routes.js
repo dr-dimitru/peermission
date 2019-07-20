@@ -16,7 +16,7 @@ FlowRouter.route('/chats', {
     this.render('chats', { chats });
   },
   data() {
-    return _app.Chats.find();
+    return _app.Collections.Chats.find();
   },
   waitOn() {
     return Meteor.subscribe('chat.list');
