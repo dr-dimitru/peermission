@@ -1,2 +1,61 @@
 template(name="chat")
-  h1 Chat + Conversation should be here
+  div.d-flex.flex-column.mb-0.mt-3.chat
+    div.d-flex.flex-row
+      a.previous.mr-auto.py-1 ‹️ Chats
+      h2.px-0
+        | @UserName1
+      div.user-avatar.ml-auto.my-auto: img(src="https://via.placeholder.com/40")
+
+    div.overflow-auto.hide-scroll
+      each messages
+        if compare userId '===' selfUserId
+          div.card.bg-sohbet.border-0.m-0.p-0.mb-4
+            div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
+              div(data-is="You - #{timestamp}").balon1.p-2.m-0.position-relative
+                a.float-right #{message}
+        else
+          div.card.bg-sohbet.border-0.m-0.p-0.mb-4
+            div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
+              div(data-is="#{username} - #{timestamp}").balon2.p-2.m-0.position-relative
+                a.float-left.sohbet2 #{message}
+      else
+        | No messsages yet
+
+    unless isConnected
+      .well
+        p Scan this QR code from another user's account
+        img#qrcode1
+        img#qrcode2
+        img#qrcode3
+        img#qrcode4
+        img#qrcode5
+        img#qrcode6
+        img#qrcode7
+        img#qrcode8
+        img#qrcode9
+        img#qrcode10
+        img#qrcode11
+        img#qrcode12
+        img#qrcode13
+        img#qrcode14
+        img#qrcode15
+        img#qrcode16
+        img#qrcode17
+        img#qrcode18
+        img#qrcode19
+        if compare action '===' 'new'
+          | Load/Scan participant's QRCode
+          div.input-group
+            div.custom-file
+              label(for="file-upload").custom-file-label.red-file-input Choose file
+              input(data-scan-qr name="scan-qr-code" id="file-upload" type="file")
+          if qrScanError
+            .well: .alert.alert-danger QR Code was not found. Please try again.
+
+  if isConnected
+    div.mt-auto
+      form.mt-auto.mb-3(data-send-message)
+        div.d-flex.flex-row.input-group
+          input(name="message" type="text").form-control.no-shadow-input
+          div.input-group-append
+            button(type="submit").btn.btn-primary.red-btn Send

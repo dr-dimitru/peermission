@@ -1,0 +1,836 @@
+$white: #FAFAFA
+$black: #010101
+$green: #2FBF83
+$green-dark: #12714A
+$green-text: #155724
+$warn-text: #856404
+$danger-text: #721C24
+$gray: #DCDCDC
+$grayish: #E9E9E9
+$gray-dark: #777
+$gray-darker: #444
+$gray-light: #EEEEEE
+$red: #BD362F
+$wrapper-width: 736px
+$mobile-width: 100vw
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300|Roboto+Slab:100,300,400,700|Roboto:300,400,500,900&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese')
+
+@-webkit-viewport
+  width: device-width
+@-moz-viewport
+  width: device-width
+@-ms-viewport
+  width: device-width
+@-o-viewport
+  width: device-width
+@viewport
+  width: device-width
+
+html, body
+  background-color: $white
+  color: $black
+  scroll-behavior: smooth
+  -ms-text-size-adjust: 100%
+  -webkit-text-size-adjust: 100%
+  text-size-adjust: 100%
+  -webkit-tap-highlight-color: transparent
+  -webkit-overflow-scrolling: touch
+  overflow-scrolling: touch
+
+  -webkit-font-smoothing: antialiased
+  -moz-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  -ms-font-smoothing: antialiased
+  -o-font-smoothing: antialiased
+  font-smoothing: antialiased
+
+  -webkit-font-smooth: always
+  -moz-font-smooth: always
+  -ms-font-smooth: always
+  -o-font-smooth: always
+  font-smooth: always
+
+  -webkit-text-rendering: optimizeLegibility
+  -moz-text-rendering: optimizeLegibility
+  -ms-text-rendering: optimizeLegibility
+  -o-text-rendering: optimizeLegibility
+  text-rendering: optimizeLegibility
+
+  -webkit-overflow-style: -webkit-autohiding-scrollbar
+  -moz-overflow-style: -moz-autohiding-scrollbar
+  -ms-overflow-style: -ms-autohiding-scrollbar
+  -o-overflow-style: -o-autohiding-scrollbar
+  overflow-style: autohiding-scrollbar
+
+  line-height: normal
+  cursor: default
+  margin: 0
+  padding: 0
+  outline: none
+  font:
+    style: normal
+    size: 16px
+    weight: 400
+    family: 'Roboto Slab', 'Times New Roman', Times, serif
+  @media(min-width: $wrapper-width)
+    font-size: 18px
+
+::active, ::focus, ::visited
+  outline: none
+
+%no-outline
+  outline: none
+  &:focus, &:active, &:hover
+    outline: none
+
+.top-pad
+  margin-top: 18vh
+.top
+  vertical-align: top
+
+a
+  @extend %no-outline
+  cursor: pointer
+  transition: color 128ms ease-in-out
+  text-decoration: none
+  color: $black
+  &:focus, &:active, &:hover
+    color: $red
+
+button, select, label, input[type="radio"], input[type="checkbox"]
+  cursor: pointer
+  user-select: none
+
+%mono
+  font-weight: 300
+  font-family: 'Roboto Mono', 'Lucida Console', Monaco, monospace
+.mono
+  @extend %mono
+
+code, kbd, pre, samp
+  @extend %mono
+
+pre
+  margin: 0.75rem 0px
+
+.break-all
+  white-space: pre-wrap
+  word-break: break-all
+
+sup
+  font-size: 70%
+
+.label
+  @extend %slab
+  border: 1px solid $gray
+  border-radius: 3px
+  font-weight: 700
+  padding: 2px 5px
+  &.red, &.danger
+    border-color: $red
+    color: $red
+  &.success, &.green
+    border-color: $green
+    color: $green-dark
+
+h1, .h1
+  .label
+    border-width: 2px
+  sup
+    font-size: 50%
+    top: -1rem
+  small
+    top: -4px
+    position: relative
+    &.xs
+      top: -8px
+
+code
+  font-size: 85%
+  border: 1px solid $gray
+  background-color: $gray-light
+  padding: 0px 2px
+  border-radius: 2px
+
+%serif
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif
+.serif
+  @extend %serif
+
+%slab
+  font-family: 'Roboto Slab', 'Times New Roman', Times, serif
+.slab
+  @extend %slab
+
+.red
+  color: $red
+.red-block
+  background-color: $red
+  color: $white
+  & > a
+    color: $white
+.green
+  color: $green
+.success
+  color: $green-text
+.success-block
+  background-color: $green-text
+  color: $white
+  & > a
+    color: $white
+.green-block
+  background-color: $green
+  color: $white
+  & > a
+    color: $white
+.warn
+  color: $warn-text
+.danger
+  color: $danger-text
+.gray
+  color: $gray-dark
+
+.hint
+  cursor: help
+dfn
+  font-style: normal
+  border-bottom: 1px dotted $gray-dark
+  cursor: help
+
+ul.inline
+  list-style: none
+  display: inline
+  margin: 0px
+  padding: 0px
+  & > li
+    display: inline
+    margin: 2px 3px
+    padding: 1px 2px
+    line-height: 2.2rem
+    &:first-child
+      display: none
+      // margin-left: 0px
+      // padding-left: 0px
+    &:last-child
+      display: none
+      // margin-right: 0px
+      // padding-right: 0px
+    input[type="checkbox"]
+      margin-right: 2px
+
+.help
+  padding-left: 10px
+  padding-right: 10px
+  margin-top: 0px
+  margin-bottom: 0.75rem
+  font-size: 0.75rem
+  color: $gray-dark
+
+.darker
+  color: $gray-darker
+
+.tabs-wrap
+  overflow-y: hidden
+  overflow-x: auto
+  -webkit-overflow-scrolling: touch
+  white-space: nowrap
+  max-width: $mobile-width
+  li, a
+    white-space: nowrap
+  .tabs
+    width: auto
+    min-width: 100%
+
+ol
+  display: block
+  list-style-type: decimal
+  padding: 0px
+  padding-left: 35px
+  margin: 15px 0px
+  li
+    margin: 0px
+    padding: 0px
+    margin-bottom: 1rem
+    padding-left: 0.5rem
+    display: list-item
+
+small, .small
+  font-size: 80%
+  &.xs
+    font-size: 40%
+
+.tabs
+  @extend %serif
+  user-select: none
+  &.fixed
+    table-layout: fixed
+  &.bottom
+    ul li
+      vertical-align: bottom
+  display: table
+  width: 100%
+  ul
+    list-style: none
+    display: table-row
+    margin: 0
+    padding: 0
+    li
+      text-align: center
+      vertical-align: middle
+      display: table-cell
+      font-size: 1.2rem
+      font-weight: 300
+      a
+        transition: border-bottom-color 128ms ease-in-out
+        display: block
+        padding: 12px 20px
+        width: 100%
+        height: 100%
+        box-sizing: border-box
+        border-bottom: 2px solid $gray
+        position: relative
+        text-decoration: none
+        &:hover
+          text-decoration: none
+          border-bottom-color: $red
+      &.active
+        a
+          color: $red
+          border-bottom-color: $red
+          cursor: default
+          &:hover
+            color: $red
+            text-decoration: none
+            border-bottom-color: $red
+
+.strict-width
+  max-width: 100%
+  max-width: $mobile-width
+  @media(min-width: $wrapper-width)
+    max-width: $wrapper-width
+    width: $wrapper-width
+
+.wr, .tt, .cr, .cc
+  box-sizing: border-box
+
+.wr
+  overflow: initial
+  .tt
+    display: table
+    max-width: 100%
+    min-height: 100%
+    min-height: calc(100% - 49px)
+    min-height: 100vh
+    min-height: calc(100vh - 49px)
+    max-width: $mobile-width
+    margin: 0px auto
+    @media(min-width: $wrapper-width)
+      max-width: $wrapper-width
+      width: $wrapper-width
+      padding: 0px
+    .cr
+      display: table-row
+      min-height: 100%
+      .cc
+        display: table-cell
+        min-height: 100%
+        vertical-align: middle
+        // padding: 15px
+        // @media(min-width: $wrapper-width)
+        //   padding: 0px
+
+form.disabled, form[disabled]
+  pointer-events: none
+  cursor: not-allowed
+  opacity: 0.5777
+
+progress
+  appearance: none
+  display: block
+  width: 100%
+  margin: 0px
+  height: 20px
+  border-radius: 0px
+progress::-webkit-progress-bar
+  background-color: $gray-light
+  border-radius: 0px
+progress::-webkit-progress-value
+  background-color: $red
+  border-radius: 0px
+
+.added
+  background-color: $green
+  color: $white
+  border: 1px solid darken($green, 10%)
+  padding: 0px 2px
+
+.removed
+  background-color: $red
+  color: $white
+  border: 1px solid darken($red, 10%)
+  padding: 0px 2px
+  text-decoration: line-through
+
+pre.diff-tool
+  width: 100%
+  background-color: $black
+  border: 1px solid $gray-darker
+  color: $white
+  line-height: 1.85em
+  overflow: scroll
+  display: block
+  padding: 10px 17px
+  max-width: $mobile-width
+  font-size: 0.777em
+  font-weight: 600
+  margin: 0px
+  box-sizing: border-box
+  @media(min-width: $wrapper-width)
+    max-width: $wrapper-width
+
+.well
+  padding: 10px 14px
+  margin: 5px 0px
+
+input, textarea, label, select, button
+  @extend %no-outline
+
+input, textarea, label, select
+  &.no-resize
+    resize: none
+  &.form-input
+    @extend %mono
+    display: block
+    box-sizing: border-box
+    width: 100%
+    border: none
+    background-color: $grayish
+    color: $black
+    transition: background-color 128ms ease-in-out
+    padding: 10px 15px
+    font-size: 1.5rem
+    &:focus, &:active
+      background-color: lighten($gray-light, 2%)
+    &.lg
+      padding: 15px 20px
+      font-size: 1.95rem
+    &.sm
+      font-size: 1.1rem
+    &.xs
+      font-size: 0.85rem
+    &:not([disabled]):not([readonly])
+      box-shadow: inset 1px 1px 6px transparentize($black, 0.85)
+    &[disabled], &[readonly]
+      &:focus, &:active
+        background-color: $grayish
+    &::placeholder
+      color: $gray-dark
+  &.form-view
+    resize: none
+    cursor: text
+
+label.form-input
+  color: $gray-dark
+  &[disabled], &.disabled
+    background: $gray-light
+    color: $black
+    cursor: not-allowed
+  &:hover
+    background: $gray-light
+    color: $black
+  &.active
+    background: $gray-light
+    color: $black
+
+select.form-input
+  @extend %slab
+  box-shadow: none
+  border: 1px solid transparentize($black, 0.85)
+  font-weight: 400
+
+input[type="checkbox"], input[type="radio"]
+  position: relative
+  display: inline-block
+  vertical-align: middle
+  box-sizing: border-box
+  -webkit-appearance: none
+  appearance: none
+  background: $gray-light
+  border: 1px solid $gray
+  height: 18px
+  width: 18px
+  &:hover:not(:checked)
+    border-color: $gray-dark
+  &:checked
+    border-color: $red
+  &:hover:checked
+    border-color: lighten($red, 15%)
+  &.lg
+    border-width: 2px
+    height: 30px
+    width: 30px
+  &.md
+    top: -2px
+    height: 22px
+    width: 22px
+  &.sm
+    height: 12px
+    width: 12px
+  &[disabled], &.disabled
+    background: $white
+    border-color: $gray
+    cursor: not-allowed
+    &:hover
+      background: $white
+      border-color: $gray
+
+input[type="checkbox"]
+  &:checked
+    &:after
+      content: ''
+      top: 3px
+      left: 2px
+      position: absolute
+      height: 5px
+      width: 10px
+      border-bottom: 2px solid $red
+      border-left: 2px solid $red
+      transform: rotate(-45deg)
+    &.md
+      &:after
+        top: 4px
+        left: 3px
+        height: 6px
+        width: 13px
+    &.lg
+      &:after
+        top: 5px
+        left: 4px
+        height: 8px
+        width: 17px
+    &[disabled], &.disabled
+      &:after
+        border-color: $gray
+
+input[type="radio"]
+  border-radius: 30px
+  &:checked
+    &:after
+      content: ''
+      top: 4px
+      left: 4px
+      position: absolute
+      height: 8px
+      width: 8px
+      border-radius: 8px
+      background-color: $red
+    &.lg
+      &:after
+        top: 6px
+        left: 6px
+        height: 14px
+        width: 14px
+        border-radius: 14px
+    &.md
+      &:after
+        top: 4px
+        left: 4px
+        height: 12px
+        width: 12px
+        border-radius: 12px
+    &.sm
+      &:after
+        top: 2px
+        left: 2px
+        height: 6px
+        width: 6px
+        border-radius: 6px
+    &[disabled], &.disabled
+      &:after
+        background-color: $gray
+
+hr
+  height: 1px
+  border: none
+  width: 100%
+  margin: 0
+  margin-top: 25px
+  margin-bottom: 25px
+  background-color: $gray-light
+  &.xs
+    margin-top: 5px
+    margin-bottom: 5px
+  &.sm
+    margin-top: 10px
+    margin-bottom: 10px
+  &.lg
+    margin-top: 40px
+    margin-bottom: 40px
+
+table
+  background: none
+  border-spacing: 0
+  border-collapse: collapse
+  &.fixed
+    table-layout: fixed
+  &.auto
+    width: auto
+    margin: 0px auto
+  td, th
+    padding: 0
+
+td, th
+  &.width-1
+    width: 1px
+
+.table
+  max-width: 100%
+  padding: 8px
+  line-height: 1.42857143
+  vertical-align: middle
+  &.sm
+    font-size: 0.9rem
+  a:hover
+    text-decoration: underline
+  th, td
+    padding: 6px 8px
+    line-height: normal
+  th
+    @extend %serif
+    font-weight: 500
+    text-align: left
+    & > a
+      user-select: none
+    &.active, &.active > a
+      background-color: $red
+      color: $white
+  tr.active, tr.active td
+    color: $white
+    background-color: $red
+    a
+      color: $white
+  &.lg
+    th, td
+      padding: 10px 14px
+
+.table-responsive
+  -webkit-overflow-scrolling: touch
+  overflow: auto
+  display: block
+  padding: 0
+  margin: 0
+  max-width: $mobile-width
+  @media(min-width: $wrapper-width)
+    max-width: $wrapper-width
+
+.table-bordered
+  th
+    border-bottom: 2px solid $gray
+  tr:not(:last-child)
+    td
+      border-bottom: 1px solid $gray
+
+.table-striped
+  tbody tr:nth-child(odd)
+    background-color: $gray-light
+
+.btn
+  @extend %serif
+  display: inline-block
+  padding: 4px 6px
+  margin-bottom: 0
+  line-height: 1.42857143
+  text-align: center
+  white-space: nowrap
+  vertical-align: middle
+  -ms-touch-action: manipulation
+  touch-action: manipulation
+  cursor: pointer
+  user-select: none
+  border: 1px solid $gray
+  background-color: transparent
+  transition: background-color 256ms ease-in-out, border-color 256ms ease-in-out, color 256ms ease-in-out
+  &.btn-xs
+    padding: 1px 5px
+    font-size: 12px
+    line-height: 1.5
+  &.btn-sm
+    padding: 5px 10px
+    font-size: 12px
+    line-height: 1.5
+  &.btn-md
+    padding: 7px 12px
+    font-size: 14px
+  &.btn-lg
+    padding: 10px 16px
+    font-size: 18px
+    line-height: 1.3333333
+  &.btn-block
+    display: block
+    width: 100%
+  &.btn-success
+    border-color: $green
+    color: $green-dark
+    &:hover
+      background-color: $green
+      color: $white
+  &.btn-danger
+    border-color: $red
+    color: $red
+    &:hover
+      background-color: $red
+      color: $white
+  &.btn-default
+    border-color: $black
+    color: $black
+    &:hover
+      background-color: $gray-dark
+      color: $white
+
+.loading-screen
+  display: table
+  position: fixed
+  top: 0px
+  left: 0px
+  min-height: 100vh
+  min-height: 100%
+  min-width: 100vh
+  min-width: 100%
+  background-color: $white
+  transition: opacity 384ms ease-in-out
+  text-align: center
+  .container
+    display: table-row
+    min-height: 100%
+    .content
+      display: table-cell
+      min-height: 100%
+      vertical-align: middle
+  .loading-logo
+    font-size: 50px
+    font-weight: 300
+    .red
+      font-weight: 900
+  .lead
+    max-width: 700px
+    margin: 0px auto
+
+p
+  line-height: 1.75rem
+
+.fw-300
+  font-weight: 300
+.fw-400
+  font-weight: 400
+
+.article
+  padding-left: 10px
+  padding-right: 10px
+
+.lead
+  font-size: 1.33rem
+  font-weight: 300
+  margin-bottom: 1.25em
+  line-height: 1.5em
+  padding-left: 10px
+  padding-right: 10px
+  a
+    font-weight: 400
+
+._out
+  width: 0.1px
+  height: 0.1px
+  opacity: 0
+  overflow: hidden
+  position: absolute
+  z-index: -1
+
+.b-left
+  border-left: 2px solid $red
+.b-right
+  border-right: 2px solid $red
+
+h1, h2, h3, h4, h5, h6, .h4
+  @extend %serif
+  font-weight: 300
+  padding-left: 10px
+  padding-right: 10px
+  &.emphasized
+    border-bottom: 2px solid $red
+    margin-bottom: 0px
+    padding-bottom: 0.25rem
+
+h1
+  font-size: 2rem
+  margin-top: 1.8rem
+  margin-bottom: 0.3rem
+h2
+  font-size: 1.8rem
+  margin-top: 1.6rem
+  margin-bottom: 0.25rem
+h3
+  font-size: 1.6rem
+  margin-top: 1.4rem
+  margin-bottom: 0.2rem
+h4, .h4
+  font-size: 1.4rem
+  margin-top: 1.2rem
+  margin-bottom: 0.15rem
+h5
+  font-size: 1.2rem
+  margin-top: 1rem
+  margin-bottom: 0.14rem
+  font-weight: 500
+h6
+  font-size: 1.1rem
+  margin-top: 1rem
+  margin-bottom: 0.13rem
+  font-weight: 900
+
+.landing
+  h1
+    border-bottom: 1px solid $gray
+    padding-bottom: 4px
+    padding-top: 4px
+    margin: 1.5em 0px 5px 0px
+    &:first-letter
+      color: $red
+      font-weight: 400
+
+.blinking
+  animation: blinking 1s ease-in-out infinite
+
+.centered
+  text-align: center
+  margin-left: auto !important
+  margin-right: auto !important
+  max-width: 64% !important
+  @media(max-width: $wrapper-width)
+    max-width: initial !important
+
+@keyframes blinking
+  0%
+    opacity: 1
+  50%
+    opacity: 0
+  100%
+    opacity: 1
+
+.fadeOut
+  opacity: 0
+
+.hidden
+  display: none
+
+.qrcode-scan-result
+  margin-bottom: 10px
+  color: $white
+  padding: 5px
+  text-weight: bold
+
+.qrcode-scan-result-not-found
+  background-color: $red
+
+.qrcode-scan-result-success
+  background-color: $green-dark
