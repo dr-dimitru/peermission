@@ -1,2 +1,56 @@
 template(name="chats")
-  h1 List of available chats 
+  div.d-flex.flex-column.mb-0.mt-3.chat
+    div.d-flex.flex-row
+      h2.px-0
+        | Customers online
+      a.previous.ml-auto.my-auto Log Out
+
+    div.chats-container.list-group.mb-4.overflow-auto.hide-scroll.chart-border
+      div.user-row.list-group-item.d-flex.align-items-sm-center.flex-column.flex-sm-row.align-items-center
+        div.user-avatar.d-none.d-sm-block: img(src="/customer1.png")
+        div.user-name.col-sm-3.col.px-0.px-sm-2 @UserName1
+        div.user-last-message.flex-child.px-0.col-sm-7.col-12.px-sm-2 Orders page
+        div.badge.badge-primary.badge-pill.mx-auto.d-none.d-sm-block Invite
+    
+    div.chats-container.list-group.mb-4.overflow-auto.hide-scroll.chart-border
+      div.user-row.list-group-item.d-flex.align-items-sm-center.flex-column.flex-sm-row.align-items-center
+        div.user-avatar.d-none.d-sm-block: img(src="/customer2.png")
+        div.user-name.col-sm-3.col.px-0.px-sm-2 @UserName2
+        div.user-last-message.flex-child.px-0.col-sm-7.col-12.px-sm-2 Homepage
+        div.badge.badge-primary.badge-pill.mx-auto.d-none.d-sm-block Invite
+
+    div.chats-container.list-group.mb-4.overflow-auto.hide-scroll.chart-border
+      div.user-row.list-group-item.d-flex.align-items-sm-center.flex-column.flex-sm-row.align-items-center
+        div.user-avatar.d-none.d-sm-block: img(src="/customer3.png")
+        div.user-name.col-sm-3.col.px-0.px-sm-2 @UserName3
+        div.user-last-message.flex-child.px-0.col-sm-7.col-12.px-sm-2 User Profile
+        div.badge.badge-primary.badge-pill.mx-auto.d-none.d-sm-block Invite       
+
+    div.chats-container.list-group.mb-4.overflow-auto.hide-scroll.chart-border
+      div.user-row.list-group-item.d-flex.align-items-sm-center.flex-column.flex-sm-row.align-items-center
+        div.user-avatar.d-none.d-sm-block: img(src="/customer4.png")
+        div.user-name.col-sm-3.col.px-0.px-sm-2 @UserName4
+        div.user-last-message.flex-child.px-0.col-sm-7.col-12.px-sm-2 Orders page
+        div.badge.badge-primary.badge-pill.mx-auto.d-none.d-sm-block Invite    
+
+    div.chats-container.list-group.mb-4.overflow-auto.hide-scroll.chart-border
+      div.user-row.list-group-item.d-flex.align-items-sm-center.flex-column.flex-sm-row.align-items-center
+        div.user-avatar.d-none.d-sm-block: img(src="/customer5.png")
+        div.user-name.col-sm-3.col.px-0.px-sm-2 @UserName5
+        div.user-last-message.flex-child.px-0.col-sm-7.col-12.px-sm-2 Invoice page
+        div.badge.badge-primary.badge-pill.mx-auto.d-none.d-sm-block Invite   
+
+    div.chats-container.list-group.mb-4.overflow-auto.hide-scroll.chart-border
+      div.user-row.list-group-item.d-flex.align-items-sm-center.flex-column.flex-sm-row.align-items-center
+        div.user-avatar.d-none.d-sm-block: img(src="/customer6.png")
+        div.user-name.col-sm-3.col.px-0.px-sm-2 @UserName6
+        div.user-last-message.flex-child.px-0.col-sm-7.col-12.px-sm-2 Statistics page
+        div.badge.badge-primary.badge-pill.mx-auto.d-none.d-sm-block Invite                  
+
+    div.chats-container.list-group.mb-4.overflow-auto.hide-scroll.chart-border
+      div.user-row.list-group-item.d-flex.align-items-sm-center.flex-column.flex-sm-row.align-items-center
+        div.user-avatar.d-none.d-sm-block: img(src="/customer7.png")
+        div.user-name.col-sm-3.col.px-0.px-sm-2 @UserName7
+        div.user-last-message.flex-child.px-0.col-sm-7.col-12.px-sm-2 Checkout page
+        div.badge.badge-primary.badge-pill.mx-auto.d-none.d-sm-block Invite        
+        

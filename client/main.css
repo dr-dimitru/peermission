@@ -1,4 +1,4 @@
-$red-color: #BD362F;
+
 .red-btn {
   background-color: $red-color !important;
   border-color: darken($red-color, 20%) !important;
@@ -34,9 +34,21 @@ $red-color: #BD362F;
   margin-bottom: 5px !important;
 }
 
+.chatframe{
+    max-width: 400px;
+}
+
+
+.username{
+    text-align: right;
+    font-size: 16px;
+    padding-top: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
 
 .balon1 a {
-  background: $red-color;
+  background:#0c7878;
   color: #FFF !important;
   border-radius: 20px 20px 3px 20px;
   display: block;
@@ -53,9 +65,12 @@ $red-color: #BD362F;
   font-size: .750rem;
   color: rgba(84, 110, 122,1.0);
 }
+.input-group{
+    padding: 0 10px;
+}
 
 .balon2 a {
-  background: #F1F1F1;
+  background: #fcc551;
   color: #000 !important;
   border-radius: 20px 20px 20px 3px;
   display: block;
@@ -83,9 +98,24 @@ $red-color: #BD362F;
   height:100%;
   position: absolute;
 }
+.chat-header .centered-row{
+    margin: 0 auto;
+    width: fit-content;    
+}
+.chat-header{
+    background-color: #eee;
+    width: 100%;
+    position: relative;
+}
+.close-chat{
+    position: absolute;
+    float: right;
+    right: 8px;
+    top: 3px;
+}
 .chat {
   height: 95vh;
-  margin-top: 10px;
+  margin-top: 0px;
 }
 .chat-border {
   border: 1px solid rgba(0, 0, 0, 0.125);
