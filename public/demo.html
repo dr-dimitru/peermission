@@ -1,0 +1,30 @@
+<html>
+<head>
+</head>
+
+<body>
+<iframe src="https://taxisnet.mof.gov.cy/login.jsp" width="100%" height="1000" frameborder="0" allowfullscreen></iframe>
+
+<iframe class="chat" src="http://localhost:3000/chat/3umLcg3K47b9dEXae" width="300" height="500" frameborder="0" style="display:none; position: absolute; right: 10px; bottom: 10px;"></iframe>
+
+<img class="start-chat" style="position: absolute; right: 10px; bottom: 10px; cursor: pointer;" src="http://localhost:3000/start.png" width="64" height="64" onclick="return StartChat();">
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script>
+$(window).scroll(function() {
+	let top  = $(window).scrollTop();
+  $(".chat").css({
+    "top": (top + $(".chat").height() - 100) + "px",
+  });
+ $(".start-chat").css({
+    "top": top + $(".chat").height() + 360 + "px",
+  });  
+});
+function StartChat(){
+	$(".start-chat").hide();
+	$(".chat").show();
+}
+</script>
+</body>
+</html> 	

@@ -37,6 +37,7 @@
 .chatframe{
     max-width: 400px;
     margin: 0 auto;
+    border: 1px solid rgb(156, 156, 156);
 }
 
 
@@ -98,6 +99,9 @@
   right: 0;
   height:100%;
   position: absolute;
+}
+.loading-img{
+    margin-top: 100px;
 }
 .chat-header .centered-row{
     margin: 0 auto;
