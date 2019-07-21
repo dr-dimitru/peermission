@@ -40,6 +40,10 @@
     border: 1px solid rgb(156, 156, 156);
 }
 
+.chatframe.red-frame{
+    border: 2px solid red;
+}
+
 
 .username{
     text-align: right;

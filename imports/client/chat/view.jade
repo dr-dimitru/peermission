@@ -1,5 +1,5 @@
 template(name="chat")
-  div.d-flex.flex-column.mb-0.chat.chatframe
+  div.d-flex.flex-column.mb-0.chat.chatframe(class="{{#if isSharingScreen}}red-frame{{/if}}")
     div.chat-header
       div.d-flex.flex-row.centered-row
         div.user-avatar.my-auto: img(src="{{#if isOperator}}/customer3.png{{else}}/administrator.png{{/if}}" width="24" height="24")
@@ -8,8 +8,12 @@ template(name="chat")
             | User
           else
             | Operator
-      unless isOperator
-        a(data-start-screen-sharing href="#") Share Screen
+
+      if isScreenSharingError
+        .alert.alert-danger #{isScreenSharingError}
+      else
+        unless isOperator
+          a(data-start-screen-sharing href="#") Share Screen
       div.close-chat: img(src="/close.png",width="16",height="16")
 
     if isLoading
@@ -29,12 +33,17 @@ template(name="chat")
                   div(data-is="{{#if ../isOperator}}User{{else}}You{{/if}} - {{moment timestamp}}").balon1.p-2.m-0.position-relative
                     a.float-right #{message}
           else if compare type '===' 'screen-call'
-            div.card.bg-sohbet.border-0.m-0.p-0.mb-4
-                div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
-                  div(data-is="{{#if ../isOperator}}User{{else}}You{{/if}} - {{moment timestamp}}").balon1.p-2.m-0.position-relative
-                    a.float-right User is offering screen sharing!
+            span screen call here #{../isOperator}
+            if ../isOperator
+              div.card.bg-sohbet.border-0.m-0.p-0.mb-4
+                  div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
+                    div(data-is="{{#if ../isOperator}}User{{else}}You{{/if}} - {{moment timestamp}}").balon1.p-2.m-0.position-relative
+                      a.float-right 
+                        | User is offering screen sharing!
+                        a(data-accept-screen-sharing href="#") Accept
 
-
+      if isOperator
+        video#screenSharingVideo
 
       div.mt-auto
         form.mt-auto.mb-3(data-send-message disabled="{{#if isSending}}disabled{{/if}}")
