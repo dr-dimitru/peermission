@@ -25,6 +25,9 @@ Meteor.publish('chat.get', function(_id, secret) {
   check(_id, String);
   check(secret, String);
 
+  if (secret === 'operator') {
+    return _app.Collections.Chats.find({ _id });
+  }
   return _app.Collections.Chats.find({ _id, secret, sessionId: this.sessionId });
 });
 

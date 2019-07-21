@@ -6,10 +6,8 @@ Meteor.methods({
   'chat.ensure'(_id, secret) {
     check(_id, String);
     check(secret, String);
-    // return { _id };
 
     const connectionId = this.connection.id;
-    console.log('connnected', connectionId);
     const chat = _app.Collections.Chats.findOne({ _id, secret });
     if (!chat) {
       _app.Collections.Chats.insert({
@@ -17,6 +15,15 @@ Meteor.methods({
         secret,
         connectionId,
         active: true
+      });
+
+      _app.Collections.Messages.insert({
+        roomId: _id,
+        from: 'operator',
+        to: 'user',
+        type: 'text',
+        message: 'Hello! Howdy? Send us a message if you need help :)',
+        isRead: false
       });
     } else {
       _app.Collections.Chats.update({
@@ -31,7 +38,6 @@ Meteor.methods({
     }
 
     this.connection.onClose(() => {
-      console.log("[onClose]", connectionId);
       _app.Collections.Chats.update({
         _id,
         secret

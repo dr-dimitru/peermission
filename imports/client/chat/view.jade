@@ -2,38 +2,37 @@ template(name="chat")
   div.d-flex.flex-column.mb-0.chat.chatframe
     div.chat-header
       div.d-flex.flex-row.centered-row
-        div.user-avatar.my-auto: img(src="/administrator.png",width="24",height="24")
-        h2.px-0.username Operator      
+        div.user-avatar.my-auto: img(src="{{#if isOperator}}/customer3.png{{else}}/administrator.png{{/if}}" width="24" height="24")
+        h2.px-0.username
+          if isOperator
+            | User
+          else
+            | Operator      
       div.close-chat: img(src="/close.png",width="16",height="16")
 
-    div.overflow-auto.hide-scroll
-      each messages
-        if compare userId '===' selfUserId
-          div.card.bg-sohbet.border-0.m-0.p-0.mb-4
-            div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
-              div(data-is="You - #{timestamp}").balon1.p-2.m-0.position-relative
-                a.float-right #{message}
-        else
-          div.card.bg-sohbet.border-0.m-0.p-0.mb-4
-            div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
-              div(data-is="#{username} - #{timestamp}").balon2.p-2.m-0.position-relative
-                a.float-left.sohbet2 #{message}
-      else
-       div.card.bg-sohbet.border-0.m-0.p-0.mb-4
-          div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
-            div(data-is="@Operator - #{timestamp}").balon2.p-2.m-0.position-relative
-              a.float-left.sohbet2 Hello, can I help you?
-        div.card.bg-sohbet.border-0.m-0.p-0.mb-4
-          div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
-            div(data-is="You - #{timestamp}").balon1.p-2.m-0.position-relative
-              a.float-right Hello! Yes please.
+    if isLoading
+      h1 Loading...
+    else
+      div.overflow-auto.hide-scroll
+        each messages
+          if compare from '===' 'operator'
+            div.card.bg-sohbet.border-0.m-0.p-0.mb-4
+              div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
+                div(data-is="{{#if isOperator}}You{{else}}Operator{{/if}} - #{timestamp}").balon1.p-2.m-0.position-relative
+                  a.float-right #{message}
+          else
+            div.card.bg-sohbet.border-0.m-0.p-0.mb-4
+              div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
+                div(data-is="{{#if isOperator}}User{{else}}You{{/if}} - #{timestamp}").balon2.p-2.m-0.position-relative
+                  a.float-left.sohbet2 #{message}
 
-
-    
-
-    div.mt-auto
-      form.mt-auto.mb-3(data-send-message)
-        div.d-flex.flex-row.input-group
-          input(name="message" type="text").form-control.no-shadow-input
-          div.input-group-append
-            button(type="submit").btn.btn-primary.red-btn Send
+      div.mt-auto
+        form.mt-auto.mb-3(data-send-message disabled="{{#if isSending}}disabled{{/if}}")
+          div.d-flex.flex-row.input-group
+            input.form-control.no-shadow-input(name="message" type="text" disabled="{{#if isSending}}disabled{{/if}}")
+            div.input-group-append
+              button(type="submit" disabled="{{#if isSending}}disabled{{/if}}").btn.btn-primary.red-btn
+                if isSending
+                  | Sending...
+                else
+                  | Send
