@@ -32,14 +32,14 @@ FlowRouter.route('/chat/:_id/:isOperator?', {
     this.render('chat', data);
   },
   data(params) {
-    return { roomId: params._id, isOperator: params.isOperator ? true : false, chats: _app.Collections.Chats.find({ _id: params._id }), messages: _app.Collections.Messages.find({ roomId: params._id }, { sort: { createdAt: -1 }}) };
+    return { roomId: params._id, isOperator: params.isOperator ? true : false, chats: _app.Collections.Chats.find({ _id: params._id }), messages: _app.Collections.Messages.find({ roomId: params._id }, { sort: { createdAt: -1 }}), signaling: _app.Collections.Signaling.find({ roomId: params._id, userType: (params.isOperator ? 'user' : 'operator') }), };
   },
   waitOn(params, qs, ready) {
     const roomId = _app.ClientStorage.get('room-id');
     const secret = _app.ClientStorage.get('room-secret');
 
     if (params.isOperator) {
-      return [Meteor.subscribe('chat.get', roomId, 'operator'), Meteor.subscribe('messages', roomId)];
+      return [Meteor.subscribe('chat.get', roomId, 'operator'), Meteor.subscribe('messages', roomId), Meteor.subscribe('signaling', roomId, (params.isOperator ? 'operator' : 'user'))];
     }
 
     if (!roomId || !secret || roomId !== params._id) {

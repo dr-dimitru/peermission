@@ -38,9 +38,7 @@ template(name="chat")
                 div.card.bg-sohbet.border-0.m-0.p-0.mb-4
                     div(id="sohbet").card.border-0.m-0.p-0.position-relative.bg-transparent
                       div(data-is="{{#if ../isOperator}}User{{else}}You{{/if}} - {{moment timestamp}}").balon1.p-2.m-0.position-relative
-                        a.float-right 
-                          | User is offering screen sharing!
-                          a(data-accept-screen-sharing href="#") Accept
+                        a(data-accept-screen-sharing href="#").float-right User is offering screen sharing! Click to accept
 
       if isOperator
         video#screenSharingVideo

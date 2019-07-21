@@ -15,54 +15,32 @@ let userPeer = false;
 let myScreenPeer = false;
 let stopObserver = false;
 let nowDate = Date.now();
+let pending = [];
 
 
 Template.chat.onCreated(function() {
-  // const localConnection = new RTCPeerConnection();
-  // const dataChannel = localConnection.createDataChannel('chat');
-  // const dataChannelStatusChange = (e) => {
-  //   if (dataChannel && dataChannel.readyState) {
-  //     if (dataChannel.readyState === 'open') {
-  //       isLoading.set(false);
-  //     } else {
-  //       isLoading.set(true);
-  //     }
-  //   }
-  // }
+  const userType = this.data.isOperator ? 'operator' : 'user';
 
-  // dataChannel.onopen = dataChannelStatusChange
-
-
-  stopObserver = this.data.messages.observeChanges({
+  stopObserver = this.data.signaling.observeChanges({
     added(_id, doc) {
-      if (nowDate < doc.timestamp) {
-        console.log("added", doc);
-      }
-    },
-    changed(_id, doc) {
-      console.log("changed", doc, myScreenPeer, userPeer);
-      // if (doc.type === 'screen-call') {
-        if (userPeer && doc.message) {
-          try {
-            JSON.parse(doc.message).forEach((offer) => {
-              console.log(offer);
-              userPeer.signal(offer);
-            });
-          } catch (e) {
-            console.error(e);
-          }
-        } else if (myScreenPeer && doc.offerAnswer) {
-          console.log("offerAnswer", doc.offerAnswer);
-          try {
-            JSON.parse(doc.offerAnswer).forEach((offer) => {
-              console.log(offer);
-              myScreenPeer.signal(offer);
-            });
-          } catch (e) {
-            console.error(e);
+      console.log('signaling added', _id, doc);
+      if (doc.userType === userType) {
+        if (userType === 'user' && myScreenPeer) {
+          myScreenPeer.signal(doc.data);
+          console.log('signaling applied', _id, doc);
+        } else if (userType === 'operator') {
+          if (userPeer) {
+            userPeer.signal(doc.data);
+            console.log('signaling applied', _id, doc);
+          } else {
+            pending.push(doc.data);
           }
         }
-      // }
+
+        Meteor.call('signaling.clear', _id, (error, res) => {
+          console.log('signaling.clear', _id, {error, res});
+        });
+      }
     }
   });
 });
@@ -106,7 +84,6 @@ Template.chat.helpers({
 Template.chat.events({
   'click [data-accept-screen-sharing]'(e, template) {
     e.preventDefault();
-    console.log(this);
     userPeer = new Peer({
       initiator: false,
       config: {
@@ -131,11 +108,13 @@ Template.chat.events({
       }
     });
 
-    const signalingData = [];
     userPeer.on('signal', (data) => {
       console.log('userPeer signal', data);
-      signalingData.push(data);
-      Meteor.call('messages.updateSignaling.operator', this._id, JSON.stringify(signalingData));
+      Meteor.call('signaling.add', {
+        roomId: template.data.roomId,
+        userType: 'user',
+        data: data
+      }, console.log.bind(console));
     });
 
     userPeer.on('connect', (data) => {
@@ -146,6 +125,7 @@ Template.chat.events({
       console.log('>>>>>>>> userPeer stream', stream);
       var video = document.getElementById('screenSharingVideo');
       video.onloadedmetadata = function() {
+        console.log(">>>>>>>>>>>>>>>> onloadedmetadata")
         video.play();
       };
       if ('srcObject' in video) {
@@ -153,23 +133,7 @@ Template.chat.events({
       } else {
         video.src = window.URL.createObjectURL(stream);
       }
-      video.play();
-    });
-
-    userPeer.on('track', (data) => {
-      // const stream =  new MediaStream(data);
-      console.log('userPeer track', data);
-      // const video = document.getElementById('screenSharingVideo');
-      // video.onloadedmetadata = function() {
-      //   video.play();
-      // };
-      // // Older browsers may not have srcObject
-      // if ('srcObject' in video) {
-      //   video.srcObject = stream;
-      // } else {
-      //   // Avoid using this in new browsers, as it is going away.
-      //   video.src = window.URL.createObjectURL(stream);
-      // }
+      // video.play();
     });
 
     userPeer.on('close', (data) => {
@@ -180,15 +144,12 @@ Template.chat.events({
       console.log(' userPeererror', data);
     });
 
-    if (this.message) {
-      try {
-        const signalingData = JSON.parse(this.message);
-        signalingData.forEach((offer) => {
-          userPeer.signal(offer);
-        });
-      } catch (error) {
-        console.error(error);
-      }
+    if (pending && pending.length) {
+      pending.forEach((offer) => {
+        userPeer.signal(offer);
+      });
+
+      pending = [];
     }
     return false;
   },
@@ -262,13 +223,14 @@ Template.chat.events({
             }
           });
 
-          let signalingData = [];
-
           myScreenPeer.on('signal', (data) => {
             console.log('signal', data);
-            signalingData.push(data);
-            // signalingData = [data];
-            Meteor.call('messages.updateSignaling', messageId, JSON.stringify(signalingData));
+
+            Meteor.call('signaling.add', {
+              roomId: template.data.roomId,
+              userType: 'operator',
+              data: data
+            }, console.log.bind(console));
           });
 
           myScreenPeer.on('connect', (data) => {
@@ -286,18 +248,6 @@ Template.chat.events({
           });
         }
       });
-
-      // const video = document.getElementById('demo-video');
-      // // Older browsers may not have srcObject
-      // if ('srcObject' in video) {
-      //   video.srcObject = stream;
-      // } else {
-      //   // Avoid using this in new browsers, as it is going away.
-      //   video.src = window.URL.createObjectURL(stream);
-      // }
-      // video.onloadedmetadata = function(e) {
-      //   video.play();
-      // };
     };
 
     const OnStreamDenied = (...args) => {
@@ -306,8 +256,6 @@ Template.chat.events({
     };
 
     getUserMedia().then(onStreamApproved).catch(OnStreamDenied);
-    // getUserMedia(session, onStreamApproved, OnStreamDenied); 
-    // console.log(navigator.mediaDevices.getUserMedia(session).then(onStreamApproved).catch(OnStreamDenied));
     return false;
   },
   'submit [data-send-message]'(e, template) {

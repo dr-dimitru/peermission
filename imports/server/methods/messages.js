@@ -16,28 +16,28 @@ Meteor.methods({
 
     return _app.Collections.Messages.insert(messageObj);
   },
-  'messages.updateSignaling'(_id, singnalingData) {
-    check(_id, String);
-    check(singnalingData, String);
+  // 'messages.updateSignaling'(_id, singnalingData) {
+  //   check(_id, String);
+  //   check(singnalingData, String);
 
-    _app.Collections.Messages.update(_id, {
-      $set: {
-        message: singnalingData
-      }
-    });
+  //   _app.Collections.Messages.update(_id, {
+  //     $set: {
+  //       message: singnalingData
+  //     }
+  //   });
 
-    return true;
-  },
-  'messages.updateSignaling.operator'(_id, singnalingData) {
-    check(_id, String);
-    check(singnalingData, String);
+  //   return true;
+  // },
+  // 'messages.updateSignaling.operator'(_id, singnalingData) {
+  //   check(_id, String);
+  //   check(singnalingData, String);
 
-    _app.Collections.Messages.update(_id, {
-      $set: {
-        offerAnswer: singnalingData
-      }
-    });
+  //   _app.Collections.Messages.update(_id, {
+  //     $set: {
+  //       offerAnswer: singnalingData
+  //     }
+  //   });
 
-    return true;
-  }
+  //   return true;
+  // }
 });
