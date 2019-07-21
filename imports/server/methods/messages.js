@@ -8,7 +8,7 @@ Meteor.methods({
       roomId: String,
       from: Match.OneOf('operator', 'user'),
       to: Match.OneOf('operator', 'user'),
-      type: Match.OneOf('text', 'screen-offer', 'screen-answer'),
+      type: Match.OneOf('text', 'screen-call', 'screen-offer', 'screen-answer'),
       message: String,
       isRead: Boolean,
       timestamp: Number

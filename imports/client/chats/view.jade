@@ -11,7 +11,7 @@ template(name="chats")
           div.user-avatar.d-none.d-sm-block: img(src="/customer1.png")
           div.user-name.col-sm-3.col.px-0.px-sm-2 @alice
           div.user-last-message.flex-child.px-0.col-sm-7.col-12.px-sm-2 Orders page
-          a.badge.badge-primary.badge-pill.mx-auto.d-none.d-sm-block(href="{{urlFor 'chat' _id=_id}}") Chat
+          a.badge.badge-primary.badge-pill.mx-auto.d-none.d-sm-block(href="{{urlFor 'chat' _id=_id isOperator='operator'}}") Chat
     else
       div.alert.alert-info No active users
     
