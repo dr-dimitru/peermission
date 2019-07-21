@@ -1,11 +1,15 @@
-import { Template } from 'meteor/templating';
-import { Meteor } from 'meteor/meteor';
+import { Meteor }      from 'meteor/meteor';
+import { Template }    from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
-import DetectRTC from 'detectrtc';
+
+import DetectRTC       from 'detectrtc';
+import Peer            from 'simple-peer';
 import './view.jade';
 
 const isLoading = new ReactiveVar(true);
 const isSending = new ReactiveVar(false);
+let stopObserver = false;
+const nowDate = Date.now();
 
 
 Template.chat.onCreated(function() {
@@ -24,12 +28,13 @@ Template.chat.onCreated(function() {
   // dataChannel.onopen = dataChannelStatusChange
 
 
-  // stopObserver = this.data.chat.observeChanges({
-  //   changed(_id, fields) {
-  //     console.log("changed", _id, fields);
-  //   }
-  // });
-  // console.log("stopObserver", stopObserver);
+  stopObserver = this.data.messages.observeChanges({
+    added(_id, fields) {
+      if (nowDate < fields.timestamp) {
+        console.log("added", _id, fields);
+      }
+    }
+  });
 });
 
 Template.chat.onRendered(function () {
@@ -37,10 +42,10 @@ Template.chat.onRendered(function () {
 });
 
 Template.chat.onDestroyed(function() {
-  // if (stopObserver) {
-  //   stopObserver.stop();
-  //   stopObserver = false;
-  // }
+  if (stopObserver) {
+    stopObserver.stop();
+    stopObserver = false;
+  }
 });
 
 Template.chat.helpers({
@@ -60,6 +65,31 @@ Template.chat.helpers({
 });
 
 Template.chat.events({
+  'click [data-start-screen-sharing]'(e, template) {
+    e.preventDefault();
+    const session = {
+      audio: false,
+      video: {
+        mandatory: {
+          chromeMediaSource: 'screen',
+          maxWidth: 1024,
+          maxHeight: 576,
+          minAspectRatio: 1.77
+        },
+        optional: []
+      }
+    };
+
+    const onStreamApproved = (...args) => {
+      console.log("onStreamApproved", args)
+    };
+
+    const OnStreamDenied = (...args) => {
+      console.log("OnStreamDenied", args)
+    };
+    navigator.getUserMedia(session, onStreamApproved, OnStreamDenied);
+    return false;
+  },
   'submit [data-send-message]'(e, template) {
     e.preventDefault();
     const message = e.currentTarget.message.value.trim();
