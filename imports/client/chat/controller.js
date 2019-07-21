@@ -12,8 +12,9 @@ const isSharingScreen = new ReactiveVar(false);
 const isScreenSharingError = new ReactiveVar(false);
 
 let userPeer = false;
+let myScreenPeer = false;
 let stopObserver = false;
-const nowDate = Date.now();
+let nowDate = Date.now();
 
 
 Template.chat.onCreated(function() {
@@ -32,22 +33,36 @@ Template.chat.onCreated(function() {
   // dataChannel.onopen = dataChannelStatusChange
 
 
-  stopObserver = this.data.messages.observe({
-    added(doc) {
+  stopObserver = this.data.messages.observeChanges({
+    added(_id, doc) {
       if (nowDate < doc.timestamp) {
         console.log("added", doc);
       }
     },
-    changed(doc) {
-      console.log("changed", doc);
-      if (doc.type === 'screen-call') {
-        if (userPeer) {
-          JSON.parse(doc.message).forEach((offer) => {
-            console.log(offer);
-            userPeer.signal(offer);
-          });
+    changed(_id, doc) {
+      console.log("changed", doc, myScreenPeer, userPeer);
+      // if (doc.type === 'screen-call') {
+        if (userPeer && doc.message) {
+          try {
+            JSON.parse(doc.message).forEach((offer) => {
+              console.log(offer);
+              userPeer.signal(offer);
+            });
+          } catch (e) {
+            console.error(e);
+          }
+        } else if (myScreenPeer && doc.offerAnswer) {
+          console.log("offerAnswer", doc.offerAnswer);
+          try {
+            JSON.parse(doc.offerAnswer).forEach((offer) => {
+              console.log(offer);
+              myScreenPeer.signal(offer);
+            });
+          } catch (e) {
+            console.error(e);
+          }
         }
-      }
+      // }
     }
   });
 });
@@ -64,6 +79,9 @@ Template.chat.onDestroyed(function() {
 });
 
 Template.chat.helpers({
+  nowDate() {
+    return nowDate;
+  },
   isLoading() {
     return isLoading.get();
   },
@@ -93,17 +111,31 @@ Template.chat.events({
       initiator: false,
       config: {
         iceServers: [{
-          urls: 'stun:stun.l.google.com:19302',
-          url: 'stun:stun.l.google.com:19302'
+          urls: 'stun:stun.services.mozilla.com',
+          url: 'stun:stun.services.mozilla.com'
+        // }, {
+        //   urls: 'stun:stun.l.google.com:19302',
+        //   url: 'stun:stun.l.google.com:19302'
+        // }, {
+      //     'urls': 'turn:192.158.29.39:3478?transport=udp',
+      //     'url': 'turn:192.158.29.39:3478?transport=udp',
+      //     'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      //     'username': '28224511:1379330808'
+      //   }, {
+      //     'urls': 'turn:192.158.29.39:3478?transport=tcp',
+      //     'url': 'turn:192.158.29.39:3478?transport=tcp',
+      //     'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      //     'username': '28224511:1379330808'
         }],
-        optional: [{DtlsSrtpKeyAgreement: true}]
+        // optional: [{DtlsSrtpKeyAgreement: true}]
       }
     });
 
+    const signalingData = [];
     userPeer.on('signal', (data) => {
       console.log('userPeer signal', data);
-      // signalingData.push(data);
-      // Meteor.call('messages.updateSignaling', messageId, JSON.stringify(signalingData));
+      signalingData.push(data);
+      Meteor.call('messages.updateSignaling.operator', this._id, JSON.stringify(signalingData));
     });
 
     userPeer.on('connect', (data) => {
@@ -111,17 +143,33 @@ Template.chat.events({
     });
 
     userPeer.on('stream', (stream) => {
+      console.log('>>>>>>>> userPeer stream', stream);
       var video = document.getElementById('screenSharingVideo');
+      video.onloadedmetadata = function() {
+        video.play();
+      };
       if ('srcObject' in video) {
         video.srcObject = stream;
       } else {
         video.src = window.URL.createObjectURL(stream);
       }
-      video.play()
+      video.play();
     });
 
     userPeer.on('track', (data) => {
+      // const stream =  new MediaStream(data);
       console.log('userPeer track', data);
+      // const video = document.getElementById('screenSharingVideo');
+      // video.onloadedmetadata = function() {
+      //   video.play();
+      // };
+      // // Older browsers may not have srcObject
+      // if ('srcObject' in video) {
+      //   video.srcObject = stream;
+      // } else {
+      //   // Avoid using this in new browsers, as it is going away.
+      //   video.src = window.URL.createObjectURL(stream);
+      // }
     });
 
     userPeer.on('close', (data) => {
@@ -138,7 +186,7 @@ Template.chat.events({
         signalingData.forEach((offer) => {
           userPeer.signal(offer);
         });
-      } catch (e) {
+      } catch (error) {
         console.error(error);
       }
     }
@@ -190,23 +238,36 @@ Template.chat.events({
         if (error) {
           console.error(error);
         } else {
-          const myScreenPeer = new Peer({
+          myScreenPeer = new Peer({
             initiator: true,
             stream: stream,
             config: {
               iceServers: [{
-                urls: 'stun:stun.l.google.com:19302',
-                url: 'stun:stun.l.google.com:19302'
+                urls: 'stun:stun.services.mozilla.com',
+                url: 'stun:stun.services.mozilla.com'
+              // }, {
+              //   urls: 'stun:stun.l.google.com:19302',
+              //   url: 'stun:stun.l.google.com:19302'
+            //     'urls': 'turn:192.158.29.39:3478?transport=udp',
+            //     'url': 'turn:192.158.29.39:3478?transport=udp',
+            //     'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+            //     'username': '28224511:1379330808'
+            //   }, {
+            //     'urls': 'turn:192.158.29.39:3478?transport=tcp',
+            //     'url': 'turn:192.158.29.39:3478?transport=tcp',
+            //     'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+            //     'username': '28224511:1379330808'
               }],
-              optional: [{DtlsSrtpKeyAgreement: true}]
+            //   optional: [{DtlsSrtpKeyAgreement: true}]
             }
           });
 
-          const signalingData = [];
+          let signalingData = [];
 
           myScreenPeer.on('signal', (data) => {
             console.log('signal', data);
             signalingData.push(data);
+            // signalingData = [data];
             Meteor.call('messages.updateSignaling', messageId, JSON.stringify(signalingData));
           });
 
