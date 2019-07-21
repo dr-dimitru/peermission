@@ -67,16 +67,28 @@ Template.chat.helpers({
 Template.chat.events({
   'click [data-start-screen-sharing]'(e, template) {
     e.preventDefault();
+
+    const getUserMedia = (function () {
+      if(navigator.getUserMedia) {
+          return navigator.getUserMedia.bind(navigator)
+      }
+      if(navigator.webkitGetUserMedia) {
+        return navigator.webkitGetUserMedia.bind(navigator)
+      }
+      if(navigator.mozGetUserMedia) {
+        return navigator.mozGetUserMedia.bind(navigator)
+      }
+    })();
     const session = {
       audio: false,
       video: {
-        mandatory: {
-          chromeMediaSource: 'screen',
+        // mandatory: {
+          // chromeMediaSource: 'screen',
           maxWidth: 1024,
           maxHeight: 576,
           minAspectRatio: 1.77
-        },
-        optional: []
+        // },
+        // optional: []
       }
     };
 
@@ -87,7 +99,9 @@ Template.chat.events({
     const OnStreamDenied = (...args) => {
       console.log("OnStreamDenied", args)
     };
-    navigator.getUserMedia(session, onStreamApproved, OnStreamDenied);
+
+    getUserMedia(session, onStreamApproved, OnStreamDenied); 
+    // console.log(navigator.mediaDevices.getUserMedia(session).then(onStreamApproved).catch(OnStreamDenied));
     return false;
   },
   'submit [data-send-message]'(e, template) {
