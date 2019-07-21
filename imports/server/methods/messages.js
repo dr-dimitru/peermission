@@ -27,5 +27,17 @@ Meteor.methods({
     });
 
     return true;
+  },
+  'messages.updateSignaling.operator'(_id, singnalingData) {
+    check(_id, String);
+    check(singnalingData, String);
+
+    _app.Collections.Messages.update(_id, {
+      $set: {
+        offerAnswer: singnalingData
+      }
+    });
+
+    return true;
   }
 });
