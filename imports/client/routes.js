@@ -26,16 +26,26 @@ FlowRouter.route('/chats', {
   }
 });
 
-FlowRouter.route('/chat/:_id', {
+FlowRouter.route('/chat/:_id/:isOperator?', {
   name: 'chat',
-  action(params) {
-    this.render('chat', { _id: params._id });
+  action(params, qs, data) {
+    this.render('chat', data);
+  },
+  data(params) {
+    return { roomId: params._id, isOperator: params.isOperator ? true : false, chats: _app.Collections.Chats.find({ _id: params._id }), messages: _app.Collections.Messages.find({ roomId: params._id }, { sort: { createdAt: -1 }}) };
   },
   waitOn(params, qs, ready) {
     const roomId = _app.ClientStorage.get('room-id');
     const secret = _app.ClientStorage.get('room-secret');
+
+    if (params.isOperator) {
+      return [Meteor.subscribe('chat.get', roomId, 'operator'), Meteor.subscribe('messages', roomId)];
+    }
+
     if (!roomId || !secret || roomId !== params._id) {
-      FlowRouter.go('start');
+      Meteor.setTimeout(() => {
+        FlowRouter.go('start');
+      }, 256);
       return [];
     }
 
@@ -44,12 +54,10 @@ FlowRouter.route('/chat/:_id', {
         console.error(error);
       } else if (res._id === roomId) {
         ready(() => {
-          return Meteor.subscribe('chat.get', roomId, secret);
+          return [Meteor.subscribe('chat.get', roomId, secret), Meteor.subscribe('messages', roomId)];
         });
       }
     });
-
-    return [];
   },
   whileWaiting() {
     this.render('loading');
