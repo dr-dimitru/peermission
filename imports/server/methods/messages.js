@@ -14,7 +14,17 @@ Meteor.methods({
       timestamp: Number
     });
 
-    _app.Collections.Messages.insert(messageObj);
+    return _app.Collections.Messages.insert(messageObj);
+  },
+  'messages.updateSignaling'(_id, singnalingData) {
+    check(_id, String);
+    check(singnalingData, String);
+
+    _app.Collections.Messages.update(_id, {
+      $set: {
+        message: singnalingData
+      }
+    });
 
     return true;
   }
